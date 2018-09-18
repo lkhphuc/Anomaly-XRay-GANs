@@ -1,0 +1,7 @@
+.ipynb_checkpoints/
+logs/
+models/
+__pycache__/
+attn/
+samples/
+
