@@ -14,10 +14,11 @@ Article: https://medium.com/vitalify-asia/gan-for-unsupervised-anomaly-detection
 Leveraging the ability to unsupervisedly learned the structure of data to generate realisitic image, this experiments aims to use that ability to perform binary classification when only trained on one class.
 
 ## Usage
-Run ```python main.py --help``` for full detail.
+Run `python main.py --help` for full detail.
 
 Example:
-```python main.py --batch_size 128 --imsize 64 --dataset mura --adv_loss inverse --version sabigan_wrist --image_path ~/datasets/ --use_tensorboard true --mura_class XR_WRIST --mura_type negative
+```
+python main.py --batch_size 128 --imsize 64 --dataset mura --adv_loss inverse --version sabigan_wrist --image_path ~/datasets/ --use_tensorboard true --mura_class XR_WRIST --mura_type negative
 ```
 
 ### How:
@@ -25,22 +26,6 @@ Example:
 - Let the model learn until it can generate good looking images.
 - Use the Encoder, Generator, Discriminator outputs and hidden features to calculate 'Reconstruction loss' and 'Feature matching' loss.
 - Classify into 'negative' or 'positive' based on the score above.
-
-## Generative results:
-#### Bigan
-![](images/bigan.gif)
-
-#### Alpha-GAN 
-![](images/alpha.gif)
-
-## Discriminative Result
-#### Bigan
-
-![](images/bigan.png)
-
-#### Alpha-GAN
-
-![](images/alpha.png)
 
 
 #### References:
