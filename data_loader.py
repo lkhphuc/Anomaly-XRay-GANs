@@ -5,15 +5,15 @@ from data_mura import customDf, MURA_dataset
 
 
 class Data_Loader():
-    def __init__(self, train, dataset, mura_class, mura_type, image_path, image_size, batch_size, shuf=True):
+    def __init__(self, train, dataset, mura_class, mura_type, image_path, image_size, batch_size, shuffle=True):
+        self.train = train
         self.dataset = dataset
+        self.mura_class = mura_class
+        self.mura_type = mura_type
         self.path = image_path
         self.imsize = image_size
         self.batch = batch_size
-        self.shuf = shuf
-        self.train = train
-        self.mura_class = mura_class
-        self.mura_type = mura_type
+        self.shuffle = shuffle
 
     def transform(self, rotation, hflip, resize, totensor, normalize, centercrop, to_pil, gray):
         options = []
@@ -38,37 +38,31 @@ class Data_Loader():
         transform = transforms.Compose(options)
         return transform
 
-    def load_lsun(self, classes='church_outdoor_train'):
-        transforms = self.transform(True, True, True, False)
-        dataset = dsets.LSUN(self.path, classes=[classes], transform=transforms)
-        return dataset
-
-    def load_celeb(self):
-        transforms = self.transform(True, True, True, True)
-        dataset = dsets.ImageFolder(self.path+'/CelebA', transform=transforms)
-        return dataset
-
     def load_mura(self, studyClass, studyType):
         transforms = self.transform(False, True, True, True, True, True, True, False)
         mura_df = customDf(self.path+'/MURA-v1.1/train_image_paths.csv', studyClass, studyType)
         dataset = MURA_dataset(mura_df, self.path, transforms)
-        # dataset = dsets.ImageFolder(self.path+'/MURA-v1.1/train/'+classes, transform=transforms)
+        return dataset
+
+    def load_mura_valid(self, studyClass, studyType):
+        transforms = self.transform(False, True, True, True, True, True, True, False)
+        mura_df = customDf(self.path+'/MURA-v1.1/valid_image_paths.csv', studyClass, studyType)
+        dataset = MURA_dataset(mura_df, self.path, transforms)
         return dataset
 
     def loader(self):
-        if self.dataset == 'lsun':
-            dataset = self.load_lsun()
-        elif self.dataset == 'celeb':
-            dataset = self.load_celeb()
-        elif self.dataset == 'mura':
-            dataset = self.load_mura(self.mura_class, self.mura_type)
+        if self.dataset == 'mura':
+            if self.train:
+                dataset = self.load_mura(self.mura_class, self.mura_type)
+            else:
+                dataset = self.load_mura_valid(self.mura_class, self.mura_type)
 
         print("Dataset lengh: ", len(dataset))
 
         loader = torch.utils.data.DataLoader(dataset=dataset,
                                               batch_size=self.batch,
-                                              shuffle=self.shuf,
+                                              shuffle=self.shuffle,
                                               num_workers=4,
                                               drop_last=False)
-        return loader
+        return loader, dataset
 

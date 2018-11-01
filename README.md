@@ -1,5 +1,7 @@
 # Unsupervised Anomaly Detection using Generative Adversarial Network on medical X-Ray image
 
+Article: https://medium.com/vitalify-asia/gan-for-unsupervised-anomaly-detection-on-x-ray-images-6b9f678ca57d
+
 ## Data
 - MURA data set https://stanfordmlgroup.github.io/competitions/mura/
 - Public, detect abnormality in X-Ray images.
@@ -11,6 +13,13 @@
 ## Approach
 Leveraging the ability to unsupervisedly learned the structure of data to generate realisitic image, this experiments aims to use that ability to perform binary classification when only trained on one class.
 
+## Usage
+Run ```python main.py --help``` for full detail.
+
+Example:
+```python main.py --batch_size 128 --imsize 64 --dataset mura --adv_loss inverse --version sabigan_wrist --image_path ~/datasets/ --use_tensorboard true --mura_class XR_WRIST --mura_type negative
+```
+
 ### How:
 - Train GAN model with the ability to inference on the latent variable (VAE+GAN / BiGAN) on only 'negative class'
 - Let the model learn until it can generate good looking images.
@@ -19,30 +28,20 @@ Leveraging the ability to unsupervisedly learned the structure of data to genera
 
 ## Generative results:
 #### Bigan
-![](images/bigan_elbow.png)
-
-![](images/bigan_finger.png)
-
-![](images/bigan_forearm.png)
-
-![](images/bigan_hand.png)
-
-![](images/bigan_humerus.png)
-
-![](images/bigan_shoulder.png)
-
-![](images/bigan_wrist.png)
+![](images/bigan.gif)
 
 #### Alpha-GAN 
-![](images/alpha_shoulder.png)
+![](images/alpha.gif)
 
 ## Discriminative Result
 #### Bigan
-![](images/bigan_hist.png)
 
-![](images/bigan_roc.png)
+![](images/bigan.png)
 
 #### Alpha-GAN
-![](images/alpha_hist.png)
 
-![](images/alpha_roc.png)
+![](images/alpha.png)
+
+
+#### References:
+- Thank https://github.com/heykeetae/Self-Attention-GAN for great examples.
